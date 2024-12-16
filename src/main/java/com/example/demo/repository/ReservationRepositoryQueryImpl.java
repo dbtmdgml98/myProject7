@@ -1,6 +1,8 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.QItem;
 import com.example.demo.entity.QReservation;
+import com.example.demo.entity.QUser;
 import com.example.demo.entity.Reservation;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +17,8 @@ public class ReservationRepositoryQueryImpl implements ReservationRepositoryQuer
 
     // QueryDSL Q클래스
     QReservation qReservation = QReservation.reservation;
+    QUser quser = QUser.user;
+    QItem qItem = QItem.item;
 
     @Override
     public List<Reservation> findReservations(Long user_id, Long item_id) {
@@ -22,6 +26,8 @@ public class ReservationRepositoryQueryImpl implements ReservationRepositoryQuer
         // 동적 쿼리
         return jpaQueryFactory
                 .selectFrom(qReservation)
+                .join(qReservation.user,quser).fetchJoin()
+                .join(qReservation.item,qItem).fetchJoin()
                 .where(userIdEq(user_id), itemIdEq(item_id))
                 .fetch();
     }
