@@ -13,6 +13,11 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    // 재사용 비중이 높은 findById 함수들을 default 메소드로 선언
+    default User findByIdOrElseThrow(Long id) {
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));
+    }
+
     User findByEmail(String email);
 
 //    List<User> findByIdIn(List<Long> userIds);

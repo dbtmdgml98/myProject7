@@ -15,6 +15,12 @@ import java.util.Optional;
 @RepositoryDefinition(domainClass = Reservation.class, idClass = Long.class)
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationRepositoryQuery {
 
+    // 재사용 비중이 높은 findById 함수들을 default 메소드로 선언
+    default Reservation findByIdOrElseThrow(Long id) {
+
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 데이터가 존재하지 않습니다."));
+    }
+
     List<Reservation> findByUserIdAndItemId(Long userId, Long itemId);
 
     List<Reservation> findByUserId(Long userId);

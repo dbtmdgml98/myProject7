@@ -6,4 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
+
+    // 재사용 비중이 높은 findById 함수들을 default 메소드로 선언
+    default Item findByIdOrElseThrow(Long id) {
+
+        return findById(id).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 값이 존재하지 않습니다."));
+    }
 }
