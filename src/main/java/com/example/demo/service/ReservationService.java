@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ReservationResponseDto;
 import com.example.demo.dto.ReservationStatusUpdateRequestDto;
+import com.example.demo.dto.ReservationStatusUpdateResponseDto;
 import com.example.demo.entity.Item;
 import com.example.demo.entity.RentalLog;
 import com.example.demo.entity.RentalLogStatus;
@@ -37,7 +38,7 @@ public class ReservationService {
 
     // TODO: 1. 트랜잭션 이해
     @Transactional
-    public void createReservation(Long itemId, Long userId, LocalDateTime startAt, LocalDateTime endAt) {
+    public ReservationResponseDto createReservation(Long itemId, Long userId, LocalDateTime startAt, LocalDateTime endAt) {
         // 쉽게 데이터를 생성하려면 아래 유효성검사 주석 처리
 //        List<Reservation> haveReservations = reservationRepository.findConflictingReservations(itemId, startAt, endAt);
 //        if(!haveReservations.isEmpty()) {
@@ -51,6 +52,8 @@ public class ReservationService {
 
         RentalLog rentalLog = new RentalLog(savedReservation, "로그 메세지", RentalLogStatus.SUCCESS);
         rentalLogService.save(rentalLog);
+
+        return ReservationResponseDto.toDto(savedReservation);
     }
 
     // TODO: 3. N+1 문제
@@ -108,7 +111,7 @@ public class ReservationService {
 
     // TODO: 7. 리팩토링
     @Transactional
-    public void updateReservationStatus(Long reservationId, ReservationStatusUpdateRequestDto status) {
+    public ReservationStatusUpdateResponseDto updateReservationStatus(Long reservationId, ReservationStatusUpdateRequestDto status) {
         Reservation reservation = reservationRepository.findByIdOrElseThrow(reservationId);
 
         ReservationStatus reservationStatus = ReservationStatus.of(status.getStatus());
@@ -118,6 +121,7 @@ public class ReservationService {
                 if (!reservation.getReservationStatus().equals(ReservationStatus.PENDING)) {
                     throw new IllegalArgumentException("PENDING 상태만 APPROVED로 변경 가능합니다.");
                 }
+
                 reservation.updateStatus(ReservationStatus.APPROVED);
                 break;
 
@@ -138,5 +142,7 @@ public class ReservationService {
             default:
                 throw new IllegalArgumentException("올바르지 않은 상태: " + status);
         }
+
+        return ReservationStatusUpdateResponseDto.toDto(reservation);
     }
 }

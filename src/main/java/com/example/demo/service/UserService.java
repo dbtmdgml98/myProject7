@@ -3,11 +3,14 @@ package com.example.demo.service;
 import com.example.demo.dto.Authentication;
 import com.example.demo.dto.LoginRequestDto;
 import com.example.demo.dto.UserRequestDto;
+import com.example.demo.dto.UserResponseDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.PasswordEncoder;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,11 +24,13 @@ public class UserService {
     }
 
     @Transactional
-    public void signupWithEmail(UserRequestDto userRequestDto) {
+    public UserResponseDto signupWithEmail(UserRequestDto userRequestDto) {
         String encodedPassword = PasswordEncoder.encode(userRequestDto.getPassword());
         userRequestDto.updatePassword(encodedPassword);
 
-        userRepository.save(userRequestDto.toEntity());
+        User savedUser = userRepository.save(userRequestDto.toEntity());
+
+        return UserResponseDto.toDto(savedUser);
     }
 
     public Authentication loginUser(LoginRequestDto loginRequestDto) {
