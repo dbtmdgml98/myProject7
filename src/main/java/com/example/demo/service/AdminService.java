@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserBatchRepository;
+import com.example.demo.entity.UserStatus;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +10,9 @@ import java.util.List;
 @Service
 public class AdminService {
     private final UserRepository userRepository;
-    private final UserBatchRepository userBatchRepository;
 
-    public AdminService(UserRepository userRepository, UserBatchRepository userBatchRepository) {
+    public AdminService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userBatchRepository = userBatchRepository;
     }
 
     // TODO: 4. find or save 예제 개선
@@ -36,7 +33,7 @@ public class AdminService {
 //        List<User> foundUser = userRepository.findByIdIn(userIds);
 
         // 한번에 상태 변경 및 저장 (수정 쿼리 1번)
-        userRepository.updateStatusByIdAndStatus(userIds,"Blocked");
+        userRepository.updateStatusByIdAndStatus(userIds, UserStatus.BLOCKED);
 
 //        // 각각 상태 변경 (수정 쿼리 3번)
 //        for (User user : foundUser) {

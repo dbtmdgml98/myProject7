@@ -13,10 +13,12 @@ public class User {
     private String email;
     private String nickname;
     private String password;
-    private String status; // NORMAL, BLOCKED
 
     @Enumerated(value = EnumType.STRING)
-    private Role role = Role.USER;
+    private UserStatus userStatus; // NORMAL, BLOCKED
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role = Role.USER;  // USER, ADMIN
 
     public User(String role, String email, String nickname, String password) {
         this.role = Role.of(role);
@@ -28,6 +30,6 @@ public class User {
     public User() {}
 
     public void updateStatusToBlocked() {
-        this.status = "BLOCKED";
+        this.userStatus = UserStatus.BLOCKED;
     }
 }

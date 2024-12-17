@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    List<User> findByIdIn(List<Long> userIds);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE User u SET u.status = :status WHERE u.id IN :ids")
-    void updateStatusByIdAndStatus(@Param("ids") List<Long> ids, String status);
+    @Query("UPDATE User u SET u.userStatus = :status WHERE u.id IN :ids")
+    void updateStatusByIdAndStatus(@Param("ids") List<Long> ids, UserStatus userStatus);
 }
