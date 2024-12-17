@@ -22,7 +22,8 @@ public class ItemResponseDto {
     }
 
     public static ItemResponseDto toDto(Item item) {
-        return new ItemResponseDto(item.getName(),
+        return new ItemResponseDto(
+                item.getName(),
                 item.getDescription(),
                 item.getManager().getId(),
                 item.getOwner().getId()

@@ -22,7 +22,8 @@ public class ReservationResponseDto {
     }
 
     public static ReservationResponseDto toDto(Reservation reservation) {
-        return new ReservationResponseDto(reservation.getId(),
+        return new ReservationResponseDto(
+                reservation.getId(),
                 reservation.getUser().getNickname(),
                 reservation.getItem().getName(),
                 reservation.getStartAt(),
