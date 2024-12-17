@@ -23,6 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    List<User> findByIdIn(List<Long> userIds);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE User u SET u.userStatus = :status WHERE u.id IN :ids")
+    @Query("UPDATE User u SET u.userStatus = :userStatus WHERE u.id IN :ids")
     void updateStatusByIdAndStatus(@Param("ids") List<Long> ids, UserStatus userStatus);
 }
