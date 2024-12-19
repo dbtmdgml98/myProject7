@@ -32,4 +32,8 @@ public class User {
     public void updateStatusToBlocked() {
         this.userStatus = UserStatus.BLOCKED;
     }
+
+    public void updateStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
 }
