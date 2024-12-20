@@ -118,11 +118,12 @@ public class ReservationService {
 
         switch (reservationStatus) {
             case APPROVED:
+            case EXPIRED:
                 if (!reservation.getReservationStatus().equals(ReservationStatus.PENDING)) {
-                    throw new IllegalArgumentException("PENDING 상태만 APPROVED로 변경 가능합니다.");
+                    throw new IllegalArgumentException("PENDING 상태만 " + reservationStatus + "로 변경 가능합니다.");
                 }
 
-                reservation.updateStatus(ReservationStatus.APPROVED);
+                reservation.updateStatus(reservationStatus);
                 break;
 
             case CANCELED:
@@ -130,13 +131,6 @@ public class ReservationService {
                     throw new IllegalArgumentException("EXPIRED 상태인 예약은 취소할 수 없습니다.");
                 }
                 reservation.updateStatus(ReservationStatus.CANCELED);
-                break;
-
-            case EXPIRED:
-                if (reservation.getReservationStatus().equals(ReservationStatus.PENDING)) {
-                    throw new IllegalArgumentException("PENDING 상태만 EXPIRED로 변경 가능합니다.");
-                }
-                reservation.updateStatus(ReservationStatus.EXPIRED);
                 break;
 
             default:
